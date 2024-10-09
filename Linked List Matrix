@@ -1,0 +1,70 @@
+class Node {
+    int data;
+    Node right;
+    Node down;
+
+    public Node(int data) {
+        this.data = data;
+        this.right = null;
+        this.down = null;
+    }
+}
+
+public class LinkedListMatrix {
+
+    public static Node createLinkedListMatrix(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return null;
+        }
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        Node[][] nodes = new Node[rows][cols];
+
+        // Create nodes
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                nodes[i][j] = new Node(matrix[i][j]);
+            }
+        }
+
+        // Link nodes
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (j < cols - 1) {
+                    nodes[i][j].right = nodes[i][j + 1];
+                }
+                if (i < rows - 1) {
+                    nodes[i][j].down = nodes[i + 1][j];
+                }
+            }
+        }
+
+        return nodes[0][0]; // Return head node
+    }
+
+    public static void printMatrix(Node head) {
+        Node rowHead = head;
+        while (rowHead != null) {
+            Node current = rowHead;
+            while (current != null) {
+                System.out.print(current.data + " ");
+                current = current.right;
+            }
+            System.out.println();
+            rowHead = rowHead.down;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+
+        Node head = createLinkedListMatrix(matrix);
+        printMatrix(head);
+    }
+}
